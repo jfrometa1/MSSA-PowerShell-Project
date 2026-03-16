@@ -32,6 +32,15 @@ MemoryWarningThreshold = 80
 MemoryCriticalThreshold = 95
 DiskWarningThresholdPercent = 20
 DiskCriticalThresholdPercent = 10
+# Monitored Services - Adjust as needed
+MonitoredServices = @(
+    "Spooler",
+    "wuauserv",
+    "BITS",
+    "WinRM",
+    "EventLog",
+    "LanmanServer"
+    )
 }
 
 return $config

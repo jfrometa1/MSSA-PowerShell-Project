@@ -23,13 +23,19 @@ Get-ChildItem "$PWD\Functions\*.ps1" | ForEach-Object { . $_.FullName }
 # $config | Format-List
 
 #Testing Get-HealthMetrics function
+# $config = Initialize-HealthMonitor
+# $healthMetrics = Get-HealthMetrics -Config $config
+# $healthMetrics | Format-List
+# $healthMetrics.DiskResults | Format-Table -AutoSize
+
+# Testing Get-ServiceHealth function
 $config = Initialize-HealthMonitor
-$healthMetrics = Get-HealthMetrics -Config $config
-$healthMetrics | Format-List
-$healthMetrics.DiskResults | Format-Table -AutoSize
+$serviceResults = Get-ServiceHealth -ServiceNames $config.MonitoredServices
+$serviceResults | Format-Table -AutoSize
 
 # Main Execution Block
 try {
+    Get-ChildItem "$PSScriptRoot\Functions\*.ps1" | ForEach-Object { . $_.FullName }
     $config = Initialize-HealthMonitor
     $healthMetrics = Get-HealthMetrics -Config $config
     $serviceResults = Get-ServiceHealth -ServiceNames $config.MonitoredServices
