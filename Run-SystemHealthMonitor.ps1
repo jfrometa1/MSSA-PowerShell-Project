@@ -13,11 +13,20 @@
     For use in Windows PowerShell 5.1 and later (including PowerShell Core on Windows)
 #>
 
+# Testing Code
 # Use $PWD instead of $PSScriptRoot for testing, but switch back to $PSScriptRoot for production use
-Get-ChildItem "$PSScriptRoot\Functions\*.ps1" | ForEach-Object { . $_.FullName }
+
+# Testing Initialize-HealthMonitor function
+Get-ChildItem "$PWD\Functions\*.ps1" | ForEach-Object { . $_.FullName }
 # Get-Command Initialize-HealthMonitor
 # $config = Initialize-HealthMonitor
 # $config | Format-List
+
+#Testing Get-HealthMetrics function
+$config = Initialize-HealthMonitor
+$healthMetrics = Get-HealthMetrics -Config $config
+$healthMetrics | Format-List
+$healthMetrics.DiskResults | Format-Table -AutoSize
 
 # Main Execution Block
 try {
