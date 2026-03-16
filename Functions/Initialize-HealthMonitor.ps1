@@ -1,6 +1,7 @@
 function Initialize-HealthMonitor {
     [CmdletBinding()]
     param()
+
 $runTime = Get-Date
 $computerName = $env:COMPUTERNAME
 
@@ -24,6 +25,13 @@ ReportDirectory = $reportDirectory
 TimeStamp = $timeStamp
 LogFile = Join-Path $logDirectory "HealthLog_$timeStamp.txt"
 HtmlReportFile = Join-Path $reportDirectory "HealthReport_$timeStamp.html"
+# Threshold Values - Adjust as needed
+CpuWarningThreshold = 80
+CpuCriticalThreshold = 95
+MemoryWarningThreshold = 80
+MemoryCriticalThreshold = 95
+DiskWarningThresholdPercent = 20
+DiskCriticalThresholdPercent = 10
 }
 
 return $config

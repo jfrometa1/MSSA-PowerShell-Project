@@ -15,9 +15,9 @@
 
 # Testing Code
 # Use $PWD instead of $PSScriptRoot for testing, but switch back to $PSScriptRoot for production use
+Get-ChildItem "$PWD\Functions\*.ps1" | ForEach-Object { . $_.FullName }
 
 # Testing Initialize-HealthMonitor function
-Get-ChildItem "$PWD\Functions\*.ps1" | ForEach-Object { . $_.FullName }
 # Get-Command Initialize-HealthMonitor
 # $config = Initialize-HealthMonitor
 # $config | Format-List

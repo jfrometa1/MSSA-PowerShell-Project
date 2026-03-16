@@ -26,9 +26,9 @@ function Get-HealthMetrics {
             0
         }
         $percentUsed = [math]::Round(100 - $percentFree, 2)
-        $diskStatus = if ($percentFree -lt $Config.CriticalDiskFreeThresholdPercent) {
+        $diskStatus = if ($percentFree -lt $Config.DiskCriticalThresholdPercent) {
             "Critical"
-        } elseif ($percentFree -lt $Config.WarningDiskFreeThresholdPercent) {
+        } elseif ($percentFree -lt $Config.DiskWarningThresholdPercent) {
             "Warning"
         } else {
             "Healthy"
@@ -44,16 +44,16 @@ function Get-HealthMetrics {
 
         }
     }
-    $cpuStatus = if ($cpuPercent -ge $Config.CriticalCpuThresholdPercent) {
+    $cpuStatus = if ($cpuPercent -ge $Config.CpuCriticalThreshold) {
         "Critical"
-    } elseif ($cpuPercent -ge $Config.WarningCpuThresholdPercent) {
+    } elseif ($cpuPercent -ge $Config.CpuThreshold) {
         "Warning"
     } else {
         "Healthy"
     }
-    $memoryStatus = if ($usedMemoryPercent -ge $Config.CriticalMemoryCriticalThreshold) {
+    $memoryStatus = if ($usedMemoryPercent -ge $Config.MemoryCriticalThreshold) {
         "Critical"
-    } elseif ($usedMemoryPercent -ge $Config.MemoryThreshold) {
+    } elseif ($usedMemoryPercent -ge $Config.MemoryWarningThreshold) {
         "Warning"
     } else {
         "Healthy"
