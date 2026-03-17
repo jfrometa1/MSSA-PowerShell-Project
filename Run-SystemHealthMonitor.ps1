@@ -29,8 +29,14 @@ Get-ChildItem "$PWD\Functions\*.ps1" | ForEach-Object { . $_.FullName }
 # $healthMetrics.DiskResults | Format-Table -AutoSize
 
 # Testing Get-ServiceHealth function
+# $config = Initialize-HealthMonitor
+# $serviceResults = Get-ServiceHealth -ServiceNames $config.MonitoredServices
+
+# Testing Invoke-ServiceRemediation function
 $config = Initialize-HealthMonitor
+$healthMetrics = Get-HealthMetrics -Config $config
 $serviceResults = Get-ServiceHealth -ServiceNames $config.MonitoredServices
+$serviceResults = Invoke-ServiceRemediation -ServiceResults $serviceResults
 $serviceResults | Format-Table -AutoSize
 
 # Main Execution Block
