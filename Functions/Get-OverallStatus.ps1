@@ -35,13 +35,15 @@ function Get-OverallStatus {
     }
 
     # Check Disk
-    if ($healthMetrics.Status -eq "Critical") {
-        $overallStatus = "Critical"
-        $reasons += "Disk usage is in a Critical state at $($healthMetrics.PercentUsed)% full"
-    }
-    elseif ($healthMetrics.Status -eq "Warning" -and $overallStatus -ne "Critical") {
-        $overallStatus = "Warning"
-        $reasons += "Disk usage is in a Warning state at $($healthMetrics.PercentUsed)% full"
+    foreach($disk in $HealthMetrics.DiskResults){
+        if ($disk.Status -eq "Critical") {
+            $overallStatus = "Critical"
+            $reasons += "Disk $($disk.DriveLetter) is in a Critical state at $($disk.PercentUsed)% full"
+        }
+        elseif ($disk.Status -eq "Warning" -and $overallStatus -ne "Critical") {
+            $overallStatus = "Warning"
+            $reasons += "Disk $($disk.DriveLetter) is in a Warning state at $($disk.PercentUsed)% full"
+        }
     }
 
     # Check Services
