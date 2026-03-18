@@ -95,12 +95,12 @@ try {
     -EventResults $eventResults
 
     # Step 7: Write log file
-    # Write-HealthLog `
-    # -Config $config `
-    # -HealthMetrics $healthMetrics `
-    # -ServiceResults $serviceResults `
-    # -EventResults $eventResults `
-    # -OverallStatus $overallStatus
+    Write-HealthLog `
+    -Config $config `
+    -HealthMetrics $healthMetrics `
+    -ServiceResults $serviceResults `
+    -EventResults $eventResults `
+    -OverallStatus $overallStatus
 
     # Output overall status to console
     $overallStatus | Format-List
