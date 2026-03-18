@@ -55,7 +55,8 @@
 param(
     [string]$ComputerName = $env:COMPUTERNAME,
     [int]$HoursToCheck = 24,
-    [switch]$Remediate
+    [switch]$Remediate,
+    [switch]$IncludeAutomatic
 )
 
 # Main Execution Block
@@ -70,9 +71,14 @@ try {
     $healthMetrics = Get-HealthMetrics -Config $config
 
     # Step 3: Check monitored services
-    $serviceResults = Get-ServiceHealth `
+    if ($IncludeAutomatic) {
+        $serviceResults = Get-ServiceHealth `
     -ServiceNames $config.MonitoredServices `
     -IncludeAutomatic
+    }
+    else {
+        $serviceResults = Get-ServiceHealth -ServiceNames $config.MonitoredServices
+    }
 
     # Step 4: Attempt remediation if requested
     if ($Remediate) {
