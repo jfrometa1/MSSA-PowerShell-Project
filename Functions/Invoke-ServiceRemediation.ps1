@@ -8,10 +8,11 @@ function Invoke-ServiceRemediation {
         if ($serviceResult.NeedsRemediation) {
             $serviceResult.RemediationAttempted = $true
             try {
+                Start-Service -Name $serviceResult.ServiceName -ErrorAction Stop
                 for($i=0; $i -lt 5; $i++) {
-                    Start-Service -Name $serviceResult.ServiceName -ErrorAction Stop
                     Start-Sleep -Seconds 1
                     $service = Get-Service -Name $serviceResult.ServiceName
+
                     if ($service.Status -eq 'Running') {
                         $serviceResult.RemediationSucceeded = $true
                         $serviceResult.CurrentStatus = "Running"
@@ -19,19 +20,15 @@ function Invoke-ServiceRemediation {
                         break
                     } 
                 }
-                Start-Service -Name $serviceResult.ServiceName -ErrorAction Stop
-                Start-Sleep -Seconds 2
-                $service = Get-Service -Name $serviceResult.ServiceName
-                if ($service.Status -eq 'Running') {
-                    $serviceResult.RemediationSucceeded = $true
-                    $serviceResult.CurrentStatus = "Running"
-                    $serviceResult.Notes = "Service successfully restarted"
-                } 
-                else {
-                    $serviceResult.Notes = "Restart attempted but service is still not running."
+
+                if (-not $serviceResult.RemediationSucceeded) {
+                        $serviceResult.RemediationSucceeded = $false
+                        $serviceResult.Notes = "Restart attempted but service is still not running."
                 }
             }
+
             catch {
+                $serviceResult.RemediationSucceeded = $false
                 $serviceResult.Notes = "Failed to restart service: $($_.Exception.Message)"
             }
         }

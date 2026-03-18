@@ -67,7 +67,7 @@ Status: $($service.CurrentStatus)"
     $EventTitle = "Recent Event Errors:"
     $logLines += $EventTitle
     $logLines += "-" * $EventTitle.Length
-    if ($EventResults.Count -ge 0) {
+    if ($EventResults.Count -gt 0) {
               foreach ($e in $EventResults) {
             $logLines += "Log: $($e.LogName) | Time: $($e.TimeCreated) | ID: $($e.Id) | Provider: $($e.ProviderName) `
 Message: $($e.Message)"

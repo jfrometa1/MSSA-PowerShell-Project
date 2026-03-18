@@ -17,31 +17,31 @@ function Get-OverallStatus {
     # Check CPU
     if ($healthMetrics.CpuStatus -eq "Critical") {
         $overallStatus = "Critical"
-        $reasons += "CPU usage is in a Critical state at $($healthMetrics.CpuUsage)%"
+        $reasons += "CPU usage is in a Critical state at $($healthMetrics.CpuPercent)%"
     }
     elseif ($healthMetrics.CpuStatus -eq "Warning" -and $overallStatus -ne "Critical") {
         $overallStatus = "Warning"
-        $reasons += "CPU usage is in a Warning state at $($healthMetrics.CpuUsage)%"
+        $reasons += "CPU usage is in a Warning state at $($healthMetrics.CpuPercent)%"
     }
 
     # Check Memory
     if ($healthMetrics.MemoryStatus -eq "Critical") {
         $overallStatus = "Critical"
-        $reasons += "Memory usage is in a Critical state at $($healthMetrics.MemoryUsage)%"
+        $reasons += "Memory usage is in a Critical state at $($healthMetrics.MemoryPercent)%"
     }
     elseif ($healthMetrics.MemoryStatus -eq "Warning" -and $overallStatus -ne "Critical") {
         $overallStatus = "Warning"
-        $reasons += "Memory usage is in a Warning state at $($healthMetrics.MemoryUsage)%"
+        $reasons += "Memory usage is in a Warning state at $($healthMetrics.MemoryPercent)%"
     }
 
     # Check Disk
-    if ($healthMetrics.DiskStatus -eq "Critical") {
+    if ($healthMetrics.Status -eq "Critical") {
         $overallStatus = "Critical"
-        $reasons += "Disk usage is in a Critical state at $($healthMetrics.DiskUsage)% full"
+        $reasons += "Disk usage is in a Critical state at $($healthMetrics.PercentUsed)% full"
     }
-    elseif ($healthMetrics.DiskStatus -eq "Warning" -and $overallStatus -ne "Critical") {
+    elseif ($healthMetrics.Status -eq "Warning" -and $overallStatus -ne "Critical") {
         $overallStatus = "Warning"
-        $reasons += "Disk usage is in a Warning state at $($healthMetrics.DiskUsage)% full"
+        $reasons += "Disk usage is in a Warning state at $($healthMetrics.PercentUsed)% full"
     }
 
     # Check Services
@@ -54,7 +54,7 @@ function Get-OverallStatus {
             $overallStatus = "Warning"
             $reasons += "Service '$($service.ServiceName)' was not running but remediation succeeded"
         }
-        elseif ($service.CurrentStatus -eq "NotFound" -and $overallStatus -ne "Critical") {
+        elseif ($service.CurrentStatus -eq "Not Found" -and $overallStatus -ne "Critical") {
             $overallStatus = "Warning"
             $reasons += "Service '$($service.ServiceName)' was not found."
         }
