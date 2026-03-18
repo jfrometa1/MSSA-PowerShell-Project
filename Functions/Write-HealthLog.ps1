@@ -11,7 +11,7 @@ function Write-HealthLog {
     $logLines += "========== System Health Monitor Log =========="
     $logLines += "Run Time: $($Config.RunTime)"
     $logLines += "Computer Name: $($Config.ComputerName)"
-    $logLines += "Overall Status: $($OverallStatus.OverallHealth)"
+    $logLines += "Overall Status: $($OverallStatus.Status)"
     $logLines += ""
 
     $logLines += "Status Reasons:"
@@ -22,12 +22,12 @@ function Write-HealthLog {
 
     $logLines += "System Health Metrics:"
     $logLines += "CPU Usage: $($HealthMetrics.CpuPercent)% [$($HealthMetrics.CpuStatus)]"
-    $logLines += "Memory Usage: $($HealthMetrics.PercentUsed)% [$($HealthMetrics.Status)]"
+    $logLines += "Memory Usage: $($HealthMetrics.MemoryPercent)% [$($HealthMetrics.MemoryStatus)]"
     $logLines += ""
 
     $logLines += "Disk Usage:"
     foreach ($disk in $HealthMetrics.DiskResults) {
-        $logLines += " - Drive $($disk.DriveLetter) $($disk.SizeGB - $disk.FreeGB)GB used of $($disk.SizeGB)GB ($($disk.PercentFree)% free) | [$($disk.Status)]"
+        $logLines += " - Drive $($disk.DriveLetter) $([double]$($disk.SizeGB - $disk.FreeGB))GB used of $($disk.SizeGB)GB ($($disk.PercentFree)% free) | [$($disk.Status)]"
     }
     $logLines += ""
 
@@ -51,6 +51,7 @@ function Write-HealthLog {
               foreach ($e in $EventResults) {
             $logLines += "Log: $($e.LogName) | Time: $($e.TimeCreated) | ID: $($e.Id) | Provider: $($e.ProviderName) `
 Message: $($e.Message)"
+            $logLines += ""
         }
     } 
     else { 
