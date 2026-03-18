@@ -103,7 +103,10 @@ try {
     -OverallStatus $overallStatus
 
     # Output overall status to console
-    $overallStatus | Format-List
+    Write-Host "Overall Status: $($overallStatus.Status)" -ForegroundColor Green
+    foreach ($reason in $overallStatus.Reasons) {
+        Write-Host "- $reason" -ForegroundColor Yellow
+    }
 }
 catch {
     Write-Error "System Health monitor failed: $_"

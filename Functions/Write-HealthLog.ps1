@@ -16,44 +16,57 @@ function Write-HealthLog {
     $logLines += "Overall Status: $($OverallStatus.Status)"
     $logLines += ""
 
-    $logLines += "Status Reasons:"
+    $StatusTitle= "Status Reasons:"
+        $logLines += $StatusTitle
+        $logLines += "-" * $StatusTitle.Length
     foreach ($reason in $OverallStatus.Reasons) {
         $logLines += "- $reason"
     }
     $logLines += ""
 
-    $logLines += "System Health Metrics:"
+    $SystemHealthTitle = "System Health Metrics:"
+    $logLines += $SystemHealthTitle
+    $logLines += "-" * $SystemHealthTitle.Length
     $logLines += "CPU Usage: $($HealthMetrics.CpuPercent)% [$($HealthMetrics.CpuStatus)]"
     $logLines += "Memory Usage: $($HealthMetrics.MemoryPercent)% [$($HealthMetrics.MemoryStatus)]"
     $logLines += ""
 
-    $logLines += "Disk Usage:"
+    $DiskTitle = "Disk Usage:"
+    $logLines += $DiskTitle
+    $logLines += "-" * $DiskTitle.Length
     foreach ($disk in $HealthMetrics.DiskResults) {
-        $logLines += " - Drive $($disk.DriveLetter) $([math]::Round($disk.SizeGB - $disk.FreeGB, 2))GB used of $($disk.SizeGB)GB ($($disk.PercentFree)% free) | [$($disk.Status)]"
+        $logLines += "- Drive $($disk.DriveLetter) $([math]::Round($disk.SizeGB - $disk.FreeGB, 2))GB used of $($disk.SizeGB)GB ($($disk.PercentFree)% free) | [$($disk.Status)]"
     }
     $logLines += ""
 
-    $logLines += "Service Results:"
+    $ServiceTitle = "Service Results:"
+    $logLines += $ServiceTitle
+    $logLines += "-" * $ServiceTitle.Length
     foreach ($service in $ServiceResults) {
         if ($service.NeedsRemediation -and $service.RemediationAttempted) {
             $logLines += "Service: $($service.ServiceName) requires remediation. `
-         Attempted: $($service.RemediationAttempted) `
-         Success: $($service.RemediationSuccess) `
-         Notes: $($service.Notes)"
+Attempted: $($service.RemediationAttempted) `
+Success: $($service.RemediationSucceeded) `
+Notes: $($service.Notes)"
+            $logLines += ""
         }
         elseif ($service.NeedsRemediation -and $service.RemediationAttempted -eq $false) {
             $logLines += "Service: $($service.ServiceName) requires remediation. `
-         Attempted: $($service.RemediationAttempted) `
-         Notes: $($service.Notes)"
+Remediation Attempted: $($service.RemediationAttempted) `
+Notes: $($service.Notes)"
+            $logLines += ""
         }
          else {
             $logLines += "Service: $($service.ServiceName) is healthy. `
-         Status: $($service.CurrentStatus)"
+Status: $($service.CurrentStatus)"
+            $logLines += ""
         }
     }
     $logLines += ""
 
-    $logLines += "Recent Event Errors:"
+    $EventTitle = "Recent Event Errors:"
+    $logLines += $EventTitle
+    $logLines += "-" * $EventTitle.Length
     if ($EventResults.Count -ge 0) {
               foreach ($e in $EventResults) {
             $logLines += "Log: $($e.LogName) | Time: $($e.TimeCreated) | ID: $($e.Id) | Provider: $($e.ProviderName) `
