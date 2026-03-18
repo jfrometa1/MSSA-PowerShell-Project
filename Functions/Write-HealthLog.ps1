@@ -35,13 +35,13 @@ function Write-HealthLog {
     foreach ($service in $ServiceResults) {
         if ($service.RemediationNeeded) {
             $logLines += "Service: $($service.ServiceName) requires remediation. `
-            Attempted: $($service.RemediationAttempted) `
-            Success: $($service.RemediationSuccess) `
-            Notes: $($service.Notes)"
+        Attempted: $($service.RemediationAttempted) `
+        Success: $($service.RemediationSuccess) `
+        Notes: $($service.Notes)"
         }
          else {
             $logLines += "Service: $($service.ServiceName) is healthy. `
-            Status: $($service.Status)"
+        Status: $($service.CurrentStatus)"
         }
     }
     $logLines += ""
@@ -49,8 +49,8 @@ function Write-HealthLog {
     $logLines += "Recent Event Errors:"
     if ($EventResults.Count -ge 0) {
               foreach ($e in $EventResults) {
-            $logLines += "Log: $($e.LogName) | Time: $($e.Time) | ID: $($e.EventId) | Provider: $($e.ProviderName) `
-            Message: $($e.Message)"
+            $logLines += "Log: $($e.LogName) | Time: $($e.TimeCreated) | ID: $($e.Id) | Provider: $($e.ProviderName) `
+Message: $($e.Message)"
         }
     } 
     else { 
