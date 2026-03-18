@@ -8,7 +8,9 @@ function Write-HealthLog {
         [PSCustomObject]$OverallStatus
     )
     $logLines = @()
-    $logLines += "========== System Health Monitor Log =========="
+    $logLines += "======================================================="
+    $logLines += "               System Health Monitor Log"
+    $logLines += "======================================================="
     $logLines += "Run Time: $($Config.RunTime)"
     $logLines += "Computer Name: $($Config.ComputerName)"
     $logLines += "Overall Status: $($OverallStatus.Status)"
@@ -16,7 +18,7 @@ function Write-HealthLog {
 
     $logLines += "Status Reasons:"
     foreach ($reason in $OverallStatus.Reasons) {
-        $logLines += " - $reason"
+        $logLines += "- $reason"
     }
     $logLines += ""
 
@@ -27,21 +29,26 @@ function Write-HealthLog {
 
     $logLines += "Disk Usage:"
     foreach ($disk in $HealthMetrics.DiskResults) {
-        $logLines += " - Drive $($disk.DriveLetter) $([double]$($disk.SizeGB - $disk.FreeGB))GB used of $($disk.SizeGB)GB ($($disk.PercentFree)% free) | [$($disk.Status)]"
+        $logLines += " - Drive $($disk.DriveLetter) $([math]::Round($disk.SizeGB - $disk.FreeGB, 2))GB used of $($disk.SizeGB)GB ($($disk.PercentFree)% free) | [$($disk.Status)]"
     }
     $logLines += ""
 
     $logLines += "Service Results:"
     foreach ($service in $ServiceResults) {
-        if ($service.RemediationNeeded) {
+        if ($service.NeedsRemediation -and $service.RemediationAttempted) {
             $logLines += "Service: $($service.ServiceName) requires remediation. `
-        Attempted: $($service.RemediationAttempted) `
-        Success: $($service.RemediationSuccess) `
-        Notes: $($service.Notes)"
+         Attempted: $($service.RemediationAttempted) `
+         Success: $($service.RemediationSuccess) `
+         Notes: $($service.Notes)"
+        }
+        elseif ($service.NeedsRemediation -and $service.RemediationAttempted -eq $false) {
+            $logLines += "Service: $($service.ServiceName) requires remediation. `
+         Attempted: $($service.RemediationAttempted) `
+         Notes: $($service.Notes)"
         }
          else {
             $logLines += "Service: $($service.ServiceName) is healthy. `
-        Status: $($service.CurrentStatus)"
+         Status: $($service.CurrentStatus)"
         }
     }
     $logLines += ""
