@@ -6,7 +6,7 @@ function Initialize-HealthMonitor {
 
 $runTime = Get-Date
 
-$basePath = "D:\System-Health-Monitor"
+$basePath = "C:\System-Health-Monitor"
 $logDirectory = Join-Path $basePath "Logs"
 $reportDirectory = Join-Path $basePath "Reports"
 
