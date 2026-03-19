@@ -74,7 +74,7 @@ function Get-RecentEventErrors {
     }
     
     $eventResults = @(
-        @($errorEvents) + @($rebootEvents) | Sort-Object LogName, TimeCreated, Id -Descending
+        @($errorEvents) + @($rebootEvents) | Sort-Object TimeCreated -Descending
     )
 
     return $eventResults

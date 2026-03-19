@@ -65,6 +65,14 @@ try {
     -EventResults $eventResults `
     -OverallStatus $overallStatus
 
+    # Step 8: Generate HTML report
+    # New-HealthHtmlReport `
+    # -Config $config `
+    # -HealthMetrics $healthMetrics `
+    # -ServiceResults $serviceResults `
+    # -EventResults $eventResults `
+    # -OverallStatus $overallStatus
+
     # Output overall status to console
     Write-Host "Overall Status: $($overallStatus.Status)" -ForegroundColor Green
     foreach ($reason in $overallStatus.Reasons) {
