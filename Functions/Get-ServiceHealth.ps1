@@ -31,6 +31,7 @@ function Get-ServiceHealth {
             [PSCustomObject]@{
                 ServiceName = $ServiceName
                 DisplayName = $ServiceName
+                OriginalStatus = "Not Found"
                 CurrentStatus = "Not Found"
                 NeedsRemediation = $false
                 RemediationAttempted = $false
@@ -52,7 +53,7 @@ function Get-ServiceHealth {
                 NeedsRemediation = $true
                 RemediationAttempted = $false
                 RemediationSucceeded = $false
-                Notes = "Automatic service is not running"
+                Notes = "Automatic service is not running."
             }
         }
     }   

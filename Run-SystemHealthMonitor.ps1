@@ -65,7 +65,7 @@ try {
     Get-ChildItem "$PWD\Functions\*.ps1" | ForEach-Object { . $_.FullName }
 
     # Step 1: Initialize configuration and paths
-    $config = Initialize-HealthMonitor
+    $config = Initialize-HealthMonitor -ComputerName $ComputerName
 
     # Step 2: Collect health metrics
     $healthMetrics = Get-HealthMetrics -Config $config

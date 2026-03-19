@@ -2,9 +2,17 @@ function Write-HealthLog {
     param(
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$Config,
+
+        [Parameter(Mandatory = $true)]
         [PSCustomObject]$HealthMetrics,
+
+        [Parameter(Mandatory = $true)]
         [PSCustomObject[]]$ServiceResults,
+
+        [Parameter(Mandatory = $true)]
         [PSCustomObject[]]$EventResults,
+        
+        [Parameter(Mandatory = $true)]
         [PSCustomObject]$OverallStatus
     )
     $logLines = @()
