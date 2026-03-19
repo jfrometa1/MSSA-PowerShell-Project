@@ -41,7 +41,8 @@ function Get-ServiceHealth {
         }
 }
     if ($IncludeAutomatic) {
-        $automaticServices = Get-Service | Where-Object { $_.StartType -eq 'Automatic' -and $_.Status -ne 'Running' }
+        $automaticServices = Get-Service | `
+        Where-Object { $_.StartType -like "*Automatic*" -and $_.Status -ne 'Running' }
 }
     foreach ($service in $automaticServices) {
         if (-not ($serviceResults.ServiceName -contains $service.Name)) {
